@@ -1,18 +1,29 @@
 import React from 'react';
+import { useGetCategoriesQuery } from '../../api/graphql';
 
 const CategoriesList = () => {
-  const categories = ["All", "Data structure", "Graphs", "Databases"];
-  
+  const { data: categories, isLoading, error } = useGetCategoriesQuery();
+
+  if (isLoading) {
+    return <div>Loading categories...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading categories: {error.message}</div>;
+  }
+
+  const allCategories = ["All", ...(categories || [])];
+
   return (
     <div className='bg-light-MainBg dark:bg-dark-MainBg'>
-    <p className="text-lg text-left font-bold mb-6 text-gray-800 dark:text-white ">
-    Select Categories
-    </p>
-    <div className="flex flex-wrap gap-2 pb-5"> 
-      {categories.map((category) => (
-        <Category key={category} name={category} />
-      ))}
-    </div>
+      <p className="text-lg text-left font-bold mb-6 text-gray-800 dark:text-white">
+        Select Categories
+      </p>
+      <div className="flex flex-wrap gap-2 pb-5">
+        {allCategories.map((category) => (
+          <Category key={category} name={category} />
+        ))}
+      </div>
     </div>
   );
 };
