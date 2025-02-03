@@ -1,5 +1,5 @@
 import { useState } from "react";
-import codingLogo from "../assets/coding.png";
+import codingLogo from "../../assets/coding.png";
 
 const Signin = () => {
   const [email, setEmail] = useState("");

@@ -1,23 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import DarkModeButton from "./DarkModeButton";
+import { Button } from "@headlessui/react";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className="">
-      <header className="px-4 py-2 flex justify-between items-center bg-light-NavbarBg  ">
+    <div className="sticky top-0 z-50">
+      <header className="px-4 py-2 flex justify-between items-center bg-light-NavbarBg dark:bg-dark-NavbarBg shadow-md">
         <div className="flex items-center px-2">
-          {/* logo*/}
-          <svg
-            width="53"
-            height="60"
-            viewBox="0 0 53 60"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          {/* Logo */}
+         
+            <svg width="53" height="60" viewBox="0 0 53 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M52.0254 14.9355L26.0127 0.0012207L0 14.9355V28.3419L6.01866 24.869V18.3912L26.0127 6.91258L46.0067 18.3912V20.9626L52.0254 17.489V14.9355Z"
               fill="#23155B"
@@ -30,46 +37,60 @@ const Navbar = () => {
               d="M46.0067 24.103L31.4072 32.5315L24.7988 36.3458L31.4072 40.1609L38.0156 36.3458L46.0045 31.7351L52.0232 28.2615V20.6301L46.0067 24.103Z"
               fill="#8053FF"
             />
-          </svg>
-          {/* link */}
-          <nav className="flex items-center justify-start mx-1 space-x-7 text-gray-600 font-bold">
-            <p>CodeCLA</p>
-            <a href="#" className="hover:underline">
+            </svg>
+            <Link to="/" className="ml-2 text-lg font-medium text-gray-600 dark:text-white hover:underline">CodeCLA</Link>
+            
+          
+          {/* Navigation Links */}
+          <nav className="flex items-center justify-start mx-6 space-x-8 text-lg">
+            <Link 
+              to="/challenges" 
+              className="text-gray-600 dark:text-white hover:underline font-medium transition-colors"
+            >
               Challenges
-            </a>
-            <a href="./LeaderBoard" className="hover:underline">
+            </Link>
+            <Link 
+              to="/leaderboard" 
+              className="text-gray-600 dark:text-white hover:underline font-medium transition-colors"
+            >
               Leaderboard
-            </a>
+            </Link>
           </nav>
         </div>
 
-        <div className="flex items-center  space-x-4">
+        <div className="flex items-center space-x-6">
+          <DarkModeButton />
+          
           {/* Profile Section */}
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
-              className="flex items-center space-x-2"
-              onClick={toggleDropdown}
+              className="flex items-center space-x-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full py-1 px-2 transition-colors"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               <img
-                src="https://via.placeholder.com/40"
+                src="https://i.pravatar.cc/150?img=13"
                 alt="User Avatar"
-                className=" w-10 h-10 rounded-full border border-gray-500"
+                className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-600"
               />
-              <span className=" hidden md:inline">User Name</span>
+              <span className="hidden md:inline text-gray-700 dark:text-gray-200 font-medium">Username</span>
             </button>
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
-              <div className=" absolute right-0 mt-2 bg-white text-black rounded shadow-md w-40">
-                <a
-                  href="#profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-NavbarBg rounded-lg shadow-lg py-1 border border-gray-200 dark:border-gray-700">
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Profile
-                </a>
-                <a href="#logout" className="block px-4 py-2 hover:bg-gray-100">
+                </Link>
+                
+                <Button
+                  className="w-full  px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  onClick={() => {}}
+                >
                   Logout
-                </a>
+                </Button>
               </div>
             )}
           </div>
@@ -78,4 +99,5 @@ const Navbar = () => {
     </div>
   );
 };
+
 export default Navbar;

@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../_components/Navbar";
 
 export default function Leaderboard() {
   const dummyData = [
@@ -25,7 +26,9 @@ export default function Leaderboard() {
     },
   ];
   return (
-    <div className="w-full h-screen bg-light-MainBg py-5">
+    <div>
+    <Navbar/>
+    <div className="w-full h-screen bg-light-MainBg dark:bg-dark-MainBg dark:text-white py-5">
       <h1 className="text-2xl font-bold mb-4 px-2 text-start">Leaderboard</h1>
       <table className="table-auto w-full border-collapse border shadow-lg">
         <thead>
@@ -49,6 +52,7 @@ export default function Leaderboard() {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

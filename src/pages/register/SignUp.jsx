@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import codingLogo from "../assets/coding.png";
+import codingLogo from "../../assets/coding.png";
 
 const schema = z.object({
   name: z.string().min(4, "Fist Name must be at least 4 letters"),
